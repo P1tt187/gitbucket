@@ -5,6 +5,7 @@ import org.mozilla.universalchardet.UniversalDetector
 import ControlUtil._
 import org.apache.commons.io.input.BOMInputStream
 import org.apache.commons.io.IOUtils
+import rl.UrlCodingUtils
 
 object StringUtil {
 
@@ -20,9 +21,9 @@ object StringUtil {
     md.digest.map(b => "%02x".format(b)).mkString
   }
 
-  def urlEncode(value: String): String = URLEncoder.encode(value, "UTF-8").replace("+", "%20")
+  def urlEncode(value: String): String = UrlCodingUtils.urlEncode(value) //URLEncoder.encode(value, "UTF-8").replace("+", "%20")
 
-  def urlDecode(value: String): String = URLDecoder.decode(value, "UTF-8")
+  def urlDecode(value: String): String = UrlCodingUtils.urlDecode(value) //URLDecoder.decode(value, "UTF-8")
 
   def splitWords(value: String): Array[String] = value.split("[ \\t　]+")
 
