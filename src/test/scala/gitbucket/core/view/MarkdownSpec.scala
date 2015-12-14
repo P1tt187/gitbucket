@@ -22,7 +22,7 @@ class MarkdownSpec extends Specification {
     "omit special characters" in {
       val before = "foo!bar@baz>9000"
       val after = generateAnchorName(before)
-      after mustEqual "foo%21bar%40baz%3e9000"
+      after mustEqual "foo!bar@baz%3e9000"
     }
   }
 
