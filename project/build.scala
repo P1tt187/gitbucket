@@ -1,9 +1,7 @@
 import sbt._
 import Keys._
-import org.scalatra.sbt._
-import com.typesafe.sbteclipse.plugin.EclipsePlugin.EclipseKeys
 import play.twirl.sbt.SbtTwirl
-import play.twirl.sbt.Import.TwirlKeys._
+import com.earldouglas.xwp.JettyPlugin
 import sbtassembly._
 import sbtassembly.AssemblyKeys._
 
@@ -18,7 +16,7 @@ object MyBuild extends Build {
     "gitbucket",
     file(".")
   )
-  .settings(ScalatraPlugin.scalatraWithJRebel: _*)
+//  .settings(ScalatraPlugin.scalatraWithJRebel: _*)
   .settings(
     test in assembly := {},
     assemblyMergeStrategy in assembly := {
@@ -51,7 +49,7 @@ object MyBuild extends Build {
       "org.json4s" %% "json4s-jackson" % "3.2.11",
       "jp.sf.amateras" %% "scalatra-forms" % "0.2.0",
       "commons-io" % "commons-io" % "2.4",
-      "io.github.gitbucket" % "markedj" % "1.0.5",
+      "io.github.gitbucket" % "markedj" % "1.0.6-SNAPSHOT",
       "org.apache.commons" % "commons-compress" % "1.9",
       "org.apache.commons" % "commons-email" % "1.3.3",
       "org.apache.httpcomponents" % "httpclient" % "4.3.6",
@@ -60,9 +58,9 @@ object MyBuild extends Build {
       "com.typesafe.slick" %% "slick" % "2.1.0",
       "com.novell.ldap" % "jldap" % "2009-10-07",
       "com.h2database" % "h2" % "1.4.180",
-//      "ch.qos.logback" % "logback-classic" % "1.0.13" % "runtime",
-      "org.eclipse.jetty" % "jetty-webapp" % "8.1.16.v20140903" % "container;provided",
-      "org.eclipse.jetty.orbit" % "javax.servlet" % "3.0.0.v201112011016" % "container;provided;test" artifacts Artifact("javax.servlet", "jar", "jar"),
+      "ch.qos.logback" % "logback-classic" % "1.1.1",
+      "org.eclipse.jetty" % "jetty-webapp" % "8.1.16.v20140903" % "provided",
+      "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided",
       "junit" % "junit" % "4.12" % "test",
       "com.mchange" % "c3p0" % "0.9.5",
       "com.typesafe" % "config" % "1.2.1",
@@ -70,12 +68,11 @@ object MyBuild extends Build {
       "com.enragedginger" %% "akka-quartz-scheduler" % "1.3.0-akka-2.3.x"  exclude("c3p0","c3p0")
     ),
     play.twirl.sbt.Import.TwirlKeys.templateImports += "gitbucket.core._",
-    EclipseKeys.withSource := true,
     javacOptions in compile ++= Seq("-target", "7", "-source", "7"),
     testOptions in Test += Tests.Argument(TestFrameworks.Specs2, "junitxml", "console"),
     javaOptions in Test += "-Dgitbucket.home=target/gitbucket_home_for_test",
     testOptions in Test += Tests.Setup( () => new java.io.File("target/gitbucket_home_for_test").mkdir() ),
     fork in Test := true,
     packageOptions += Package.MainClass("JettyLauncher")
-  ).enablePlugins(SbtTwirl)
+  ).enablePlugins(SbtTwirl, JettyPlugin)
 }
