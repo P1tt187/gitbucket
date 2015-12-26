@@ -1,7 +1,6 @@
 @(repository: gitbucket.core.service.RepositoryService.RepositoryInfo,
   hasWritePermission: Boolean)(implicit context: gitbucket.core.controller.Context)
 @import gitbucket.core.service.SystemSettingsService
-@import context._
 @import gitbucket.core.view.helpers._
 @html.main(s"${repository.owner}/${repository.name}", Some(repository)) {
   @html.menu("code", repository){
@@ -13,7 +12,7 @@
         via <a href="@repository.httpUrl" class="git-protocol-selector">HTTP</a>
       @if(settings.ssh && loginAccount.isDefined){
          or
-         <a href="@repository.sshUrl(settings.sshPort.getOrElse(SystemSettingsService.DefaultSshPort), loginAccount.get.userName)" class="git-protocol-selector">SSH</a>
+         <a href="@repository.sshUrl(settings.sshPort.getOrElse(SystemSettingsService.DefaultSshPort))" class="git-protocol-selector">SSH</a>
       }
       </div>
       <h3 style="margin-top: 30px;">Create a new repository on the command line</h3>

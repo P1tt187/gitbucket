@@ -1,7 +1,7 @@
 package gitbucket.core.service
 
-import gitbucket.core.model.{Collaborator, Repository, Account}
 import gitbucket.core.model.Profile._
+import gitbucket.core.model.{Account, Collaborator, Repository}
 import gitbucket.core.util.JGitUtil
 import profile.simple._
 
@@ -385,9 +385,10 @@ object RepositoryService {
 
     lazy val host = """^https?://(.+?)(:\d+)?/""".r.findFirstMatchIn(httpUrl).get.group(1)
 
-    def sshUrl(port: Int, userName: String) = s"ssh://${userName}@${host}:${port}/${owner}/${name}.git"
+    def sshUrl(port: Int) = if(port!=22) { s"ssh://git@${host}:${port}/${owner}/${name}.git" }
+    else {s"git@${host}:${owner}/${name}.git"}
 
-    def sshOpenRepoUrl(platform: String, port: Int, userName: String) = openRepoUrl(platform, sshUrl(port, userName))
+    def sshOpenRepoUrl(platform: String, port: Int) = openRepoUrl(platform, sshUrl(port))
 
     def httpOpenRepoUrl(platform: String) = openRepoUrl(platform, httpUrl)
 

@@ -1,19 +1,21 @@
 package gitbucket.core.service
 
-import java.util.Date
-import gitbucket.core.model.Account
-import gitbucket.core.util._
-import gitbucket.core.util.ControlUtil._
-import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.treewalk.CanonicalTreeParser
-import org.eclipse.jgit.lib._
-import org.eclipse.jgit.dircache.DirCache
-import org.eclipse.jgit.diff.{DiffEntry, DiffFormatter}
 import java.io.ByteArrayInputStream
-import org.eclipse.jgit.patch._
+import java.util.Date
+
+import gitbucket.core.model.Account
+import gitbucket.core.service.RepositoryService.RepositoryInfo
+import gitbucket.core.util.ControlUtil._
+import gitbucket.core.util._
+import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.errors.PatchFormatException
+import org.eclipse.jgit.diff.{DiffEntry, DiffFormatter}
+import org.eclipse.jgit.dircache.DirCache
+import org.eclipse.jgit.lib._
+import org.eclipse.jgit.patch._
+import org.eclipse.jgit.treewalk.CanonicalTreeParser
+
 import scala.collection.JavaConverters._
-import RepositoryService.RepositoryInfo
 
 object WikiService {
   
@@ -41,7 +43,7 @@ object WikiService {
   def httpUrl(repository: RepositoryInfo) = repository.httpUrl.replaceFirst("\\.git\\Z", ".wiki.git")
 
   def sshUrl(repository: RepositoryInfo, settings: SystemSettingsService.SystemSettings, userName: String) =
-    repository.sshUrl(settings.sshPort.getOrElse(SystemSettingsService.DefaultSshPort), userName).replaceFirst("\\.git\\Z", ".wiki.git")
+    repository.sshUrl(settings.sshPort.getOrElse(SystemSettingsService.DefaultSshPort)).replaceFirst("\\.git\\Z", ".wiki.git")
 }
 
 trait WikiService {

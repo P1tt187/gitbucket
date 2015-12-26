@@ -1,9 +1,10 @@
 package gitbucket.core.ssh
 
+import java.io.{InputStream, OutputStream}
+
 import gitbucket.core.service.SystemSettingsService
 import org.apache.sshd.common.Factory
-import org.apache.sshd.server.{Environment, ExitCallback, Command}
-import java.io.{OutputStream, InputStream}
+import org.apache.sshd.server.{Command, Environment, ExitCallback}
 import org.eclipse.jgit.lib.Constants
 
 class NoShell extends Factory[Command] with SystemSettingsService {
@@ -31,7 +32,7 @@ class NoShell extends Factory[Command] with SystemSettingsService {
           |
           | Please use:
           |
-          | git clone ssh://%s@GITBUCKET_HOST:%d/OWNER/REPOSITORY_NAME.git
+          | git clone %s@GITBUCKET_HOST:%d/OWNER/REPOSITORY_NAME.git
         """.stripMargin.format(user, port).replace("\n", "\r\n") + "\r\n"
       err.write(Constants.encode(message))
       err.flush()

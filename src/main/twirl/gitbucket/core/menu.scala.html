@@ -6,7 +6,6 @@
   info: Option[Any] = None,
   error: Option[Any] = None)(body: Html)(implicit context: gitbucket.core.controller.Context)
 @import gitbucket.core.service.SystemSettingsService
-@import context._
 @import gitbucket.core.view.helpers._
 
 @sidemenu(path: String, name: String, icon: String, label: String, count: Int = 0) = {
@@ -187,8 +186,8 @@ $(function(){
 
     $('#repository-url-ssh').click(function(){
       $('#repository-url-proto').text('SSH');
-      $('#repository-url').val('@repository.sshUrl(settings.sshPort.getOrElse(SystemSettingsService.DefaultSshPort), loginAccount.get.userName)');
-      $('#repository-clone-url').attr('href', '@repository.sshOpenRepoUrl(context.platform, settings.sshPort.getOrElse(SystemSettingsService.DefaultSshPort), loginAccount.get.userName)');
+      $('#repository-url').val('@repository.sshUrl(settings.sshPort.getOrElse(SystemSettingsService.DefaultSshPort))');
+      $('#repository-clone-url').attr('href', '@repository.sshOpenRepoUrl(context.platform, settings.sshPort.getOrElse(SystemSettingsService.DefaultSshPort))');
       $('#repository-url-copy').attr('data-clipboard-text', $('#repository-url').val());
     });
   }

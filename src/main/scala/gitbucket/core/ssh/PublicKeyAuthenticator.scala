@@ -10,11 +10,16 @@ import org.apache.sshd.server.session.ServerSession
 class PublicKeyAuthenticator extends PublickeyAuthenticator with SshKeyService {
 
   override def authenticate(username: String, key: PublicKey, session: ServerSession): Boolean = {
-    Database() withSession { implicit session =>
-      getPublicKeys(username).exists { sshKey =>
-        SshUtil.str2PublicKey(sshKey.publicKey) match {
-          case Some(publicKey) => key.equals(publicKey)
-          case _ => false
+    Database() withSession { implicit dbSession =>
+      if (!"git".equals(username)) {
+        false
+      } else {
+        getAllKeys().filter(k=> k.publicKey!= null && !k.publicKey.trim.isEmpty).exists{
+          sshKey =>
+            SshUtil.str2PublicKey(sshKey.publicKey) match {
+              case Some(pubKey) => key.equals(pubKey)
+              case _=> false
+            }
         }
       }
     }
