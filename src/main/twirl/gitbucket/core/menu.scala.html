@@ -6,6 +6,7 @@
   info: Option[Any] = None,
   error: Option[Any] = None)(body: Html)(implicit context: gitbucket.core.controller.Context)
 @import gitbucket.core.service.SystemSettingsService
+@import context._
 @import gitbucket.core.view.helpers._
 
 @sidemenu(path: String, name: String, icon: String, label: String, count: Int = 0) = {
